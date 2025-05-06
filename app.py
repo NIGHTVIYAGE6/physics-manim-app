@@ -30,7 +30,7 @@ def call_ai_model(prompt):
             model='qwen-turbo',
             prompt=prompt,
             result_format='message',
-            api_key=os.environ["DASHSCOPE_API_KEY"]  # ✅ 安全读取 key
+            api_key=os.environ["DASHSCOPE_API_KEY"]
         )
     except Exception as e:
         print("[异常] 调用失败:", e)
@@ -92,8 +92,7 @@ def generate():
 def serve_video(filename):
     return send_from_directory(VIDEO_DIR, filename)
 
-# ✅ 自动打开网页（可选）
+# ✅ 用于部署环境：绑定到 0.0.0.0，并使用 Render 分配的端口
 if __name__ == '__main__':
-    import webbrowser
-    webbrowser.open("http://127.0.0.1:5000")
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000))  # Render 会自动提供 PORT 环境变量
+    app.run(host='0.0.0.0', port=port)
