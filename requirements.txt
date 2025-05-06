@@ -1,4 +1,5 @@
 flask
 dashscope
-python-dotenv
 manim
+python-dotenv
+gunicorn
