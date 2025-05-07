@@ -6,5 +6,8 @@ __pycache__/
 static/videos/temp_*/
 static/videos/videos/
 
+# 忽略渲染出的 MP4
+static/videos/output_*.mp4
+
 # IDE & 环境文件
 *.env
