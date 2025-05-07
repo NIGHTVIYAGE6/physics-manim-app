@@ -1,4 +1,0 @@
-# This file is used internally by FFMPEG.
-file 'file:D:/physics_manim_app/static/videos/temp_1746605642/2160p60/partial_movie_files/FreeFall3D/2304650522_292305587_2615138036.mp4'
-file 'file:D:/physics_manim_app/static/videos/temp_1746605642/2160p60/partial_movie_files/FreeFall3D/4217847967_836971069_1454720582.mp4'
-file 'file:D:/physics_manim_app/static/videos/temp_1746605642/2160p60/partial_movie_files/FreeFall3D/827578428_2068277886_3194406080.mp4'

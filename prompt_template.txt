@@ -1,15 +1,25 @@
 你是一位精通 Manim 的物理老师，请根据我接下来的描述，使用 Python Manim 编写一个动画代码。
 
 要求：
-1. 场景类名为 TestScene，继承自 Scene。
-2. 使用 self.play() 展示物理现象。
-3. 输出的代码必须是可运行的 Manim Python 代码。
-4. 不要有解释性文字，只输出完整代码。
+
+场景类名为 TestScene，继承自 Scene。
+
+使用 self.play() 展示物理现象。
+
+输出的代码必须是可运行的 Manim Python 代码。
+
+不要有解释性文字，只输出完整代码。
 
 以下是描述：
 {description}
 
 ※ 如果要绘制“地面”或水平线，不要这样写：
-   Line(LEFT*5, RIGHT*5, DOWN*0.1)
-  而要这样写，先创建两点连线再下移：
-   ground = Line(LEFT*5, RIGHT*5).shift(DOWN*0.1)
+Line(LEFT5, RIGHT5, DOWN0.1)
+而要这样写，先创建两点连线再下移：
+ground = Line(LEFT5, RIGHT5).shift(DOWN0.1)
+
+※ 如果需要给 Mobject 添加更新器（updater），不要写：
+mobject.add_updater(fn.func)
+而要写：
+mobject.add_updater(fn)
+
