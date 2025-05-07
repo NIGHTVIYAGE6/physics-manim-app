@@ -6,7 +6,7 @@ RUN apt-get update && apt-get install -y \
     python3-dev \
     pkg-config \
     libcairo2-dev \
-    libpango1.0-dev \          # ← 新增这一行，用于 pangocairo
+    libpango1.0-dev \
     ffmpeg \
     texlive-latex-base \
     fonts-noto \
