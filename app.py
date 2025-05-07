@@ -211,7 +211,7 @@ class TestScene(ThreeDScene):
     output_filename = f"output_{timestamp}.mp4"
     output_path = os.path.join(VIDEO_DIR, output_filename)
     render_cmd = (
-        f"manim {temp_script} TestScene -qk --media_dir static --output_file {output_filename}"
+        f"manim {temp_script} TestScene -ql --media_dir static --output_file {output_filename}"
     )
     subprocess.run(render_cmd, shell=True)
 
