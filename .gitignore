@@ -1,0 +1,10 @@
+# Python bytecode
+__pycache__/
+*.py[cod]
+
+# Manim temp 输出
+static/videos/temp_*/
+static/videos/videos/
+
+# IDE & 环境文件
+*.env
