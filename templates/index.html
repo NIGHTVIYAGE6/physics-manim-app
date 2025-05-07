@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="zh">
 <head>
   <meta charset="UTF-8" />
@@ -29,13 +28,13 @@
       font-size: 18px;
       line-height: 1.6;
     }
-   .middle {
+    .middle {
       padding: 40px;
       text-align: center;
       position: relative;
       z-index: 2;
     }
-   .middle input[type="text"] {
+    .middle input[type="text"] {
       width: 60%;
       padding: 10px;
       font-size: 18px;
@@ -43,7 +42,7 @@
       border-radius: 6px;
       margin-bottom: 20px;
     }
-   .middle button {
+    .middle button {
       padding: 10px 25px;
       font-size: 18px;
       border: none;
@@ -53,36 +52,33 @@
       cursor: pointer;
       transition: background 0.3s;
     }
-   .middle button:hover {
+    .middle button:hover {
       background-color: #2980b9;
     }
-
-   .video-section {
+    .video-section {
       padding: 20px;
       text-align: center;
       position: relative;
       z-index: 2;
     }
-   .video-section video {
+    .video-section video {
       width: 80%;
       max-width: 900px;
       border: 4px solid #444;
       border-radius: 10px;
       box-shadow: 0 0 15px #111;
     }
-
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(-20px); }
       to { opacity: 1; transform: translateY(0); }
     }
-
-   .audio-control {
+    .audio-control {
       text-align: center;
       margin-top: 10px;
       position: relative;
       z-index: 2;
     }
-   .audio-control button {
+    .audio-control button {
       background-color: #2ecc71;
       color: white;
       font-size: 16px;
@@ -91,19 +87,16 @@
       border-radius: 6px;
       cursor: pointer;
     }
-   .audio-control button:hover {
+    .audio-control button:hover {
       background-color: #27ae60;
     }
-
-    /* 流星样式 */
-   .meteor {
+    .meteor {
       position: absolute;
       width: 2px;
       height: 100px;
-      background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
+      background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,1));
       animation: meteorFall linear infinite;
     }
-
     @keyframes meteorFall {
       from {
         top: -100px;
@@ -116,16 +109,46 @@
         opacity: 0;
       }
     }
-
     .keywords-box {
       margin-top: 15px;
       font-size: 16px;
       color: #f1c40f;
+      position: relative;
+      z-index: 2;
+    }
+    /* 新增：图片展示区样式 */
+    #images img {
+      width: 150px;
+      border-radius: 4px;
+      box-shadow: 0 0 8px #000;
+    }
+    /* 新增：问答区样式 */
+    .qa-section {
+      padding: 30px;
+      margin: 40px auto;
+      background: rgba(0, 0, 0, 0.6);
+      width: 80%;
+      max-width: 900px;
+      border-radius: 8px;
+      position: relative;
+      z-index: 2;
+      text-align: center;
+    }
+    .qa-section input[type="text"] {
+      width: 70%;
+      margin-bottom: 15px;
+    }
+    .qa-section .answer {
+      margin-top: 20px;
+      font-size: 16px;
+      color: #a2d5f2;
+      text-align: left;
+      word-wrap: break-word;
     }
   </style>
 </head>
 <body>
-  <!-- 生成流星 -->
+  <!-- 流星效果 -->
   <script>
     function createMeteor() {
       const meteor = document.createElement('div');
@@ -138,42 +161,43 @@
       meteor.style.animationDelay = `${Math.random() * 5}s`;
       document.body.appendChild(meteor);
     }
-
-    for (let i = 0; i < 10; i++) {
-      setTimeout(createMeteor, i * 1000);
-    }
+    for (let i = 0; i < 10; i++) setTimeout(createMeteor, i * 1000);
   </script>
 
   <div class="header">
     <h1>智能物理教学动画系统</h1>
-    <p>👋 你好，我是你的智能物理老师！请用一句话描述你想要展示的物理现象，我会为你生成动画。</p>
-    <p>例如：🧲 “演示一个物体自由下落的过程” | 🔍 “展示凸透镜成像原理”</p>
+    <p>👋 你好，我是你的智能物理老师！请用一句话描述你想要展示的物理现象，我会为你生成动画，并实时提取关键词、展示示意图。</p>
   </div>
 
   <div class="middle">
-    <form action="/generate" method="post">
-      <input type="text" name="description" placeholder="请输入你的物理现象描述..." required />
+    <form id="generate-form" action="/generate" method="post">
+      <input type="text" id="description" name="description" value="{{ description|default('') }}" placeholder="请输入你的物理现象描述..." required />
       <br />
       <button type="submit">生成动画</button>
     </form>
-    {% if error %}
-      <p style="color: red; margin-top: 10px;">{{ error }}</p>
-    {% endif %}
-    {% if keywords %}
-      <div class="keywords-box">
-        <strong>关键词：</strong>
-        {{ keywords|join('；') }}
-      </div>
-    {% endif %}
+
+    <!-- 实时关键词展示 -->
+    <div id="keywords-box" class="keywords-box"><strong>关键词：</strong></div>
+
+    <!-- 相关示意图展示区 -->
+    <div id="image-box" class="video-section" style="margin-top:20px;"><h3>🖼️ 相关示意图</h3>
+      <div id="images" style="display:flex; flex-wrap:wrap; gap:10px; justify-content:center;"></div>
+    </div>
+
+    {% if error %}<p style="color: red; margin-top: 10px;">{{ error }}</p>{% endif %}
     {% if video_file %}
-      <div class="video-section" style="margin-top: 30px;">
-        <h3>🎬 生成动画展示</h3>
-        <video controls autoplay muted>
-          <source src="{{ url_for('static', filename='videos/' + video_file) }}" type="video/mp4" />
-          您的浏览器不支持 video 标签。
-        </video>
+      <div class="video-section" style="margin-top: 30px;"><h3>🎬 生成动画展示</h3>
+        <video controls autoplay muted><source src="{{ url_for('serve_video', filename=video_file) }}" type="video/mp4" />您的浏览器不支持 video 标签。</video>
       </div>
     {% endif %}
+  </div>
+
+  <!-- 教师提问自动回复模块 -->
+  <div class="qa-section">
+    <h3>❓ 教师在线问答</h3>
+    <input type="text" id="question" placeholder="在此输入你的教学相关问题..." />
+    <button id="ask-btn">提问</button>
+    <div id="answer" class="answer"></div>
   </div>
 
   <div class="video-section">
@@ -183,15 +207,49 @@
     </video>
   </div>
 
-  <!-- 音乐播放器 -->
+  <!-- 背景音乐 -->
   <audio id="bgm" loop>
     <source src="{{ url_for('static', filename='audio/bgm.mp3') }}" type="audio/mpeg">
     您的浏览器不支持 audio 元素。
   </audio>
+  <div class="audio-control"><button onclick="document.getElementById('bgm').play()">🎵 开始播放背景音乐</button></div>
 
-  <!-- 播放按钮 -->
-  <div class="audio-control">
-    <button onclick="document.getElementById('bgm').play()">🎵 开始播放背景音乐</button>
-  </div>
+  <script>
+    function debounce(fn, delay) { let timer; return (...args) => { clearTimeout(timer); timer = setTimeout(() => fn.apply(this, args), delay); }; }
+    const descEl = document.getElementById('description'), kwBox = document.getElementById('keywords-box');
+    const qaInput = document.getElementById('question'), askBtn = document.getElementById('ask-btn'), answerDiv = document.getElementById('answer');
+
+    async function fetchKeywords() {
+      const text = descEl.value.trim();
+      if (!text) { kwBox.innerHTML='<strong>关键词：</strong>'; document.getElementById('images').innerHTML=''; return; }
+      try {
+        const resp = await fetch('/keywords', { method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body:new URLSearchParams({ text }) });
+        const data = await resp.json();
+        if (data.keywords) { kwBox.innerHTML='<strong>关键词：</strong>'+data.keywords.join('；'); fetchImages(data.keywords); }
+        else { kwBox.innerHTML='<strong>关键词：</strong>无法提取'; document.getElementById('images').innerHTML=''; }
+      } catch (e) { console.error(e); kwBox.innerHTML='<strong>关键词：</strong>请求失败'; document.getElementById('images').innerHTML=''; }
+    }
+
+    async function fetchImages(keywords) {
+      try {
+        const resp = await fetch('/images', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ keywords }) });
+        const { images } = await resp.json();
+        const container = document.getElementById('images'); container.innerHTML=''; (images||[]).forEach(src=>{ const img=document.createElement('img'); img.src=src; container.appendChild(img); });
+      } catch (e) { console.error('图片加载失败', e); }
+    }
+
+    async function askQuestion() {
+      const q=qaInput.value.trim(); if(!q){ answerDiv.textContent='请输入问题~'; return; }
+      answerDiv.textContent='回答生成中...';
+      try {
+        const resp = await fetch('/ask', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ question:q }) });
+        const data = await resp.json(); answerDiv.textContent = data.answer || '未能获取答案';
+      } catch(e) { console.error(e); answerDiv.textContent='提问失败'; }
+    }
+
+    askBtn.addEventListener('click', askQuestion);
+    descEl.addEventListener('input', debounce(fetchKeywords, 300));
+    document.addEventListener('DOMContentLoaded', () => { if(descEl.value.trim()) fetchKeywords(); });
+  </script>
 </body>
 </html>
