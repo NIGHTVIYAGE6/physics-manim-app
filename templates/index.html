@@ -116,6 +116,12 @@
         opacity: 0;
       }
     }
+
+    .keywords-box {
+      margin-top: 15px;
+      font-size: 16px;
+      color: #f1c40f;
+    }
   </style>
 </head>
 <body>
@@ -153,6 +159,12 @@
     {% if error %}
       <p style="color: red; margin-top: 10px;">{{ error }}</p>
     {% endif %}
+    {% if keywords %}
+      <div class="keywords-box">
+        <strong>关键词：</strong>
+        {{ keywords|join('；') }}
+      </div>
+    {% endif %}
     {% if video_file %}
       <div class="video-section" style="margin-top: 30px;">
         <h3>🎬 生成动画展示</h3>
@@ -172,17 +184,14 @@
   </div>
 
   <!-- 音乐播放器 -->
-
   <audio id="bgm" loop>
     <source src="{{ url_for('static', filename='audio/bgm.mp3') }}" type="audio/mpeg">
     您的浏览器不支持 audio 元素。
   </audio>
 
   <!-- 播放按钮 -->
-
   <div class="audio-control">
     <button onclick="document.getElementById('bgm').play()">🎵 开始播放背景音乐</button>
   </div>
-
 </body>
-</html>    
+</html>

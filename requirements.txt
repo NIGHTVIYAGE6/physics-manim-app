@@ -3,3 +3,5 @@ dashscope
 manim
 python-dotenv
 gunicorn
+jieba
+scikit-learn
